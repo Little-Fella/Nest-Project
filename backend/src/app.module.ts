@@ -5,15 +5,17 @@ import { UsersModule } from './users/users.module';
 import { ClinicContactsModule } from './clinic-contacts/clinic-contacts.module';
 import { PatientsModule } from './patients/patients.module';
 import { DentistsModule } from './dentists/dentists.module';
+import { AppointmentsModule } from './appointments/appointments.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     DatabaseModule,
-    //UsersModule,
-    //ClinicContactsModule,
-    //PatientsModule,
+    UsersModule,
+    ClinicContactsModule,
+    PatientsModule,
     DentistsModule,
+    AppointmentsModule,
   ],
 })
 export class AppModule {}
