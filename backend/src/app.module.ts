@@ -8,18 +8,22 @@ import { DentistsModule } from './dentists/dentists.module';
 import { AppointmentsModule } from './appointments/appointments.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { ServicesModule } from './services/services.module';
+import { AppointmentServicesModule } from './app_serv/appointment-service.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     DatabaseModule,
-    //UsersModule,
-    //ClinicContactsModule,
+    UsersModule,
+    ClinicContactsModule,
     PatientsModule,
     DentistsModule,
-    //AppointmentsModule,
-    //PaymentsModule,
+    AppointmentsModule,
+    PaymentsModule,
     ReviewsModule,
+    ServicesModule,
+    AppointmentServicesModule,
   ],
 })
 export class AppModule {}
