@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Patient } from '../patients/patient.entity';
 import { Dentist } from '../dentists/dentist.entity';
+import { AppointmentService } from '../app_serv/appointment-service.entity';
 
 @Entity('appointments')
 export class Appointment {
@@ -32,4 +33,7 @@ export class Appointment {
 
   @Column({ name: 'updated_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
+  @OneToMany(() => AppointmentService, appointmentService => appointmentService.appointment)
+  appointmentServices: AppointmentService[];
 }
