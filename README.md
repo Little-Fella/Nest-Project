@@ -1,3 +1,21 @@
+<h1 align="center">КАК ЗАПУСТИТЬ BACKEND</h1>
+
+<p>Чтобы запустить backend, нужно сделать:</p>
+<ul>
+  <li>Скопировать проект с гитхаба: <b>git clone https://github.com/Little-Fella/Nest-Project.git</b></li>
+  <li>Зайти в папку <b>backend</b> через терминал, с помощью <b>cd</b></li>
+  <li>Написать в терминале <b>npm install nest</b></li>
+  <li>Перейти в папку <b>src</b> и создать там файл <b>.env</b></li>
+  <li>
+    Прописываетсе в .env:<br>
+    <b>DB_USERNAME = postgres<br>
+    DB_HOST = localhost<br>
+    DB_PORT = 5432<br>
+    DB_PASSWORD = Пароль от вашей базы данных из PostgreSQL<br>
+    DB_DATABASE = Название вашей базы данных из PostgreSQL</b>
+  </li>
+</ul>
+
 <h1 align="center">ВАЖНЫЕ GIT КОММАНДЫ</h1>
 
 <p>Скопировать github проект себе на компьютер: <b>git clone (ссылка на репозиторий github)</b></p>
