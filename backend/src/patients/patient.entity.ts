@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Entity('patients')
 export class Patient {
@@ -17,12 +18,27 @@ export class Patient {
   @Column({ type: 'varchar', length: 50 })
   phone: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, unique: true })
   email: string;
+
+  @Column({ type: 'varchar', length: 255, select: false }) // select: false исключит поле из выборок по умолчанию
+  password: string;
 
   @Column({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
   @Column({ name: 'updated_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    if (this.password) {
+      this.password = await bcrypt.hash(this.password, 10);
+    }
+  }
+
+  async comparePassword(attempt: string): Promise<boolean> {
+    return bcrypt.compare(attempt, this.password);
+  }
 }

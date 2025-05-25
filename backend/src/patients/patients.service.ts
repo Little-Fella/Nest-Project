@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+// patients.service.ts
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Patient } from './patient.entity';
@@ -11,57 +12,39 @@ export class PatientsService {
   ) {}
 
   async findAll(): Promise<Patient[]> {
-    return this.patientsRepository.query('SELECT * FROM patients');
+    return this.patientsRepository.find();
   }
 
   async findOne(id: number): Promise<Patient> {
-    const [result] = await this.patientsRepository.query(
-      'SELECT * FROM patients WHERE id = $1', 
-      [id]
-    );
-    return result;
+    const patient = await this.patientsRepository.findOne({ where: { id } });
+    if (!patient) {
+      throw new NotFoundException(`Patient with ID ${id} not found`);
+    }
+    return patient;
+  }
+
+  async findByEmail(email: string): Promise<Patient | null> {
+    return this.patientsRepository.findOne({ 
+      where: { email },
+      select: ['id', 'first_name', 'last_name', 'email', 'password', 'birth_date', 'phone', 'createdAt', 'updatedAt']
+    });
   }
 
   async create(patient: Omit<Patient, 'id' | 'createdAt' | 'updatedAt'>): Promise<Patient> {
-    const result = await this.patientsRepository.query(
-      `INSERT INTO patients 
-       (first_name, last_name, birth_date, phone, email) 
-       VALUES ($1, $2, $3, $4, $5) 
-       RETURNING *`,
-      [
-        patient.first_name,
-        patient.last_name,
-        patient.birth_date,
-        patient.phone,
-        patient.email
-      ],
-    );
-    return result[0];
+    const newPatient = this.patientsRepository.create(patient);
+    return this.patientsRepository.save(newPatient);
   }
 
   async update(id: number, patient: Partial<Patient>): Promise<Patient> {
-    const result = await this.patientsRepository.query(
-      `UPDATE patients 
-       SET first_name = $1, last_name = $2, birth_date = $3, 
-           phone = $4, email = $5 
-       WHERE id = $6 
-       RETURNING *`,
-      [
-        patient.first_name,
-        patient.last_name,
-        patient.birth_date,
-        patient.phone,
-        patient.email,
-        id
-      ],
-    );
-    return result[0];
+    const existingPatient = await this.findOne(id); // Используем findOne, который уже проверяет наличие
+    const updatedPatient = this.patientsRepository.merge(existingPatient, patient);
+    return this.patientsRepository.save(updatedPatient);
   }
 
   async delete(id: number): Promise<void> {
-    await this.patientsRepository.query(
-      'DELETE FROM patients WHERE id = $1', 
-      [id]
-    );
+    const result = await this.patientsRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Patient with ID ${id} not found`);
+    }
   }
 }
