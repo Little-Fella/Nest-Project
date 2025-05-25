@@ -15,15 +15,15 @@ import { AppointmentServicesModule } from './app_serv/appointment-service.module
   imports: [
     ConfigModule.forRoot(),
     DatabaseModule,
-    UsersModule,
-    ClinicContactsModule,
+    //UsersModule,
+    //ClinicContactsModule,
     PatientsModule,
-    DentistsModule,
-    AppointmentsModule,
-    PaymentsModule,
-    ReviewsModule,
-    ServicesModule,
-    AppointmentServicesModule,
+    //DentistsModule,
+    //AppointmentsModule,
+    //PaymentsModule,
+    //ReviewsModule,
+    //ServicesModule,
+    //AppointmentServicesModule,
   ],
 })
 export class AppModule {}
