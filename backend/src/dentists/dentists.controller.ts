@@ -1,33 +1,47 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
-import { DentistsService } from './dentists.service';
-import { Dentist } from './dentist.entity';
+import { Controller, Get, Post, Put, Delete, Param, Body, NotFoundException, Query } from '@nestjs/common';
+import { DentistsService } from './dentists.services';
+import { Dentist } from './dentists.entity';
 
 @Controller('dentists')
 export class DentistsController {
-  constructor(private readonly dentistsService: DentistsService) {}
+    constructor(private readonly dentistsService: DentistsService) {}
 
-  @Get()
-  findAll() {
-    return this.dentistsService.findAll();
-  }
+    @Get()
+    findAll() {
+        return this.dentistsService.findAll();
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.dentistsService.findOne(+id);
-  }
+    @Get(':id')
+    async findOne(@Param('id') id: string) {
+        const dentist = await this.dentistsService.findOne(+id);
+        if (!dentist) {
+            throw new NotFoundException('Dentist not found');
+        }
+        return dentist;
+    }
 
-  @Post()
-  create(@Body() dentist: Omit<Dentist, 'id'>) {
-    return this.dentistsService.create(dentist);
-  }
+    @Get('specialization/:specialization')
+    findBySpecialization(@Param('specialization') specialization: string) {
+        return this.dentistsService.findBySpecialization(specialization);
+    }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() dentist: Partial<Dentist>) {
-    return this.dentistsService.update(+id, dentist);
-  }
+    @Get('clinic/:clinic_id')
+    findByClinicId(@Param('clinic_id') clinicId: string) {
+        return this.dentistsService.findByClinicId(+clinicId);
+    }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.dentistsService.delete(+id);
-  }
+    @Post()
+    create(@Body() dentist: Omit<Dentist, 'id' | 'createdAt' | 'updatedAt'>) {
+        return this.dentistsService.create(dentist);
+    }
+
+    @Put(':id')
+    update(@Param('id') id: string, @Body() dentist: any) {
+        return this.dentistsService.update(+id, dentist);
+    }
+
+    @Delete(':id')
+    remove(@Param('id') id: string) {
+        return this.dentistsService.remove(+id);
+    }
 }

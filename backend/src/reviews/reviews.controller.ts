@@ -1,44 +1,69 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
-import { ReviewsService } from './reviews.service';
-import { CreateReviewDto } from '../dto/create-review.dto';
-import { UpdateReviewDto } from '../dto/update-review.dto';
+import { Controller, Get, Post, Put, Delete, Param, Body, NotFoundException, Query } from '@nestjs/common';
+import { ReviewsService } from './reviews.services';
+import { Review } from './reviews.entity';
 
 @Controller('reviews')
 export class ReviewsController {
-  constructor(private readonly reviewsService: ReviewsService) {}
+    constructor(private readonly reviewsService: ReviewsService) {}
 
-  @Get()
-  findAll() {
-    return this.reviewsService.findAll();
-  }
+    @Get()
+    findAll() {
+        return this.reviewsService.findAll();
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reviewsService.findOne(+id);
-  }
+    @Get(':id')
+    async findOne(@Param('id') id: string) {
+        const review = await this.reviewsService.findOne(+id);
+        if (!review) {
+            throw new NotFoundException('Review not found');
+        }
+        return review;
+    }
 
-  @Get('dentist/:dentistId')
-  findByDentist(@Param('dentist_id') dentist_id: string) {
-    return this.reviewsService.findByDentist(+dentist_id);
-  }
+    @Get('grade/:grade')
+    async findByGrade(
+        @Param('grade') grade: string,
+        @Query('min') minGrade?: string,
+        @Query('max') maxGrade?: string
+    ) {
+        if (grade) {
+            const reviews = await this.reviewsService.findByGrade(+grade);
+            if (reviews.length === 0) {
+                return { message: 'No reviews found with this grade' };
+            }
+            return reviews;
+        }
 
-  @Get('dentist/:dentistId/average')
-  getAverageRating(@Param('dentist_id') dentist_id: string) {
-    return this.reviewsService.getAverageRating(+dentist_id);
-  }
+        if (minGrade || maxGrade) {
+            const min = minGrade ? +minGrade : 0;
+            const max = maxGrade ? +maxGrade : 5;
+            return this.reviewsService.findByGradeRange(min, max);
+        }
 
-  @Post()
-  create(@Body() createReviewDto: CreateReviewDto) {
-    return this.reviewsService.create(createReviewDto);
-  }
+        return { message: 'Please specify grade or grade range' };
+    }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
-    return this.reviewsService.update(+id, updateReviewDto);
-  }
+    @Get('patient/:patient_id')
+    async findByPatientId(@Param('patient_id') patientId: string) {
+        const reviews = await this.reviewsService.findByPatientId(+patientId);
+        if (reviews.length === 0) {
+            return { message: 'No reviews found for this patient' };
+        }
+        return reviews;
+    }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reviewsService.delete(+id);
-  }
+    @Post()
+    create(@Body() review: Omit<Review, 'id' | 'createdAt' | 'updatedAt'>) {
+        return this.reviewsService.create(review);
+    }
+
+    @Put(':id')
+    update(@Param('id') id: string, @Body() review: Partial<Review>) {
+        return this.reviewsService.update(+id, review);
+    }
+
+    @Delete(':id')
+    remove(@Param('id') id: string) {
+        return this.reviewsService.remove(+id);
+    }
 }

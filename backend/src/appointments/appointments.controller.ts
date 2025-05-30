@@ -1,34 +1,39 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
-import { AppointmentsService } from './appointments.service';
-import { CreateAppointmentDto } from '../dto/create-appointment.dto';
-import { UpdateAppointmentDto } from '../dto/update-appointment.dto';
+import { Controller, Get, Post, Put, Delete, Param, Body, NotFoundException } from '@nestjs/common';
+import { AppointmentsService } from './appointments.services';
 
 @Controller('appointments')
 export class AppointmentsController {
-  constructor(private readonly appointmentsService: AppointmentsService) {}
+    constructor(private readonly appointmentsService: AppointmentsService) {}
 
-  @Get()
-  findAll() {
-    return this.appointmentsService.findAll();
-  }
+    @Get()
+    async findAll() {
+        return this.appointmentsService.findAll();
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.appointmentsService.findOne(+id);
-  }
+    @Get(':id')
+    async findOne(@Param('id') id: string) {
+        const appointment = await this.appointmentsService.findOne(+id);
+        if (!appointment) {
+            throw new NotFoundException('Appointment not found');
+        }
+        return appointment;
+    }
 
-  @Post()
-  create(@Body() createAppointmentDto: CreateAppointmentDto) {
-    return this.appointmentsService.create(createAppointmentDto);
-  }
+    @Post()
+    async create(@Body() appointment: any) {
+        return this.appointmentsService.create(appointment);
+    }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateAppointmentDto: UpdateAppointmentDto) {
-    return this.appointmentsService.update(+id, updateAppointmentDto);
-  }
+    @Put(':id')
+    schedule(
+        @Param('id') id: string,
+        @Body() body: { appointment_date: string; appointment_time: string }
+    ) {
+        return this.appointmentsService.scheduleAppointment(+id, body.appointment_date, body.appointment_time);
+    }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.appointmentsService.delete(+id);
-  }
+    @Delete(':id')
+    async remove(@Param('id') id: string) {
+        return this.appointmentsService.remove(+id);
+    }
 }

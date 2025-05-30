@@ -1,0 +1,176 @@
+:root {
+  --font-family-base: Rubik, sans-serif;
+}
+
+a {
+  text-decoration: none;           /* убирает подчеркивание */
+  color: inherit;                  /* наследует цвет от родителя */
+  outline: none;                   /* убирает контур при фокусе */
+  box-shadow: none;                /* убирает любые тени */
+  -webkit-tap-highlight-color: transparent; /* убирает подсветку при нажатии на мобильных */
+  font-family: var(--font-family-base);
+}
+
+a:focus,
+a:active {
+  outline: none;
+  box-shadow: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family-base);
+  background: #e6f6ff;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 40px 0;
+}
+
+.card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px 40px;
+  width: 320px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.card2 {
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px 40px;
+  width: 320px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.card h2 {
+  color: #003366;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.card2 h2 {
+  color: #003366;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.card .brand {
+  font-size: 28px;
+  color: #111;
+  margin-bottom: 10px;
+}
+
+.logo img {
+  display: block;
+  margin: 0 auto 10px auto;
+}
+
+.logo-register img {
+  width: 120px;
+}
+
+.logo-login img {
+  width: 120px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid #cce6f6;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 15px;
+  background: #f9fcff;
+}
+
+.input-group span {
+  margin-right: 10px;
+}
+
+.input-group input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 14px;
+  background: transparent;
+}
+
+.btn {
+  background: linear-gradient(90deg, #2D9CDB 0%, #39ADD2 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  width: auto;
+  border-radius: 14px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.socials {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.socials img {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.dont-have-account {
+  margin-top: 20px;
+}
+
+.already-have-account {
+  margin-top: 20px;
+}
+
+.reg-link {
+  color: #0077cc;
+  margin-top: 15px;
+  font-size: 16px;
+}
+
+.log-link {
+  color: #0077cc;
+  margin-top: 15px;
+  font-size: 16px;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.options input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.forgot-password {
+  color: #0077cc;
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
