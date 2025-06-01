@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import './RegisterPage.css'; 
 import logo from './img/logo.png';
@@ -19,6 +19,7 @@ const RegisterPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -40,6 +41,8 @@ const RegisterPage: React.FC = () => {
       // Обработка успешного ответа
       console.log('Registration successful:', response.data);
       setSuccess(true);
+
+      navigate("/login")
     } catch (err) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.message || 'Registration failed');
@@ -50,6 +53,7 @@ const RegisterPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
+
   };
 
   return (

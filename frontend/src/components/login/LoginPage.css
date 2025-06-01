@@ -71,14 +71,17 @@
   .logo img {
     display: block;
     margin: 0 auto 10px auto;
+    width: 120px;
   }
   
   .logo-register img {
-    width: 120px;
+    width: 200px;
+    height: 120px;
   }
   
   .logo-login img {
-    width: 120px;
+    width: 200px;
+    height: 120px;
   }
   
   .input-group {

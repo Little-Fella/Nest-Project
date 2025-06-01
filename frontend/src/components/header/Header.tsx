@@ -1,6 +1,7 @@
 import logoImg from './DENT.svg';
 import { Link } from "react-router-dom";
 import "./Header.css"
+import { AuthStatus } from '../authStatus/authStatus';
 
 export const Header = () => {
   return (
@@ -24,9 +25,7 @@ export const Header = () => {
           </li>
         </ul>
       </nav>
-      <div className="header-action">
-        <button className="login"><Link to="/registration">Вход/Регистрация</Link></button>
-      </div>
+      <AuthStatus />
     </header>
   );
 };

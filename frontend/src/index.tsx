@@ -5,6 +5,7 @@ import RegisterPage from './components/register/RegisterPage';
 import LoginPage from './components/login/LoginPage';
 import reportWebVitals from './reportWebVitals';
 import { Header } from './components/header/Header';
+import UserProfilePage from './components/profile/profilePage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,6 +16,7 @@ root.render(
         <Route path="/" element={<Header />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/registration" element={<RegisterPage />} />
+        <Route path="/profile" element={<UserProfilePage />} />
       </Routes>
     </Router>
 );

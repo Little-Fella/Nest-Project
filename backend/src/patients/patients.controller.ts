@@ -35,13 +35,13 @@ export class PatientsController {
   }
 
   @Post('login')
-  async login(@Body() credentials: { email: string; password: string }) {
+    async login(@Body() credentials: { email: string; password: string }) {
     const user = await this.authService.validateUser(credentials.email, credentials.password);
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+        throw new UnauthorizedException('Invalid credentials');
     }
-    return this.authService.login(user);
-  }
+      return this.authService.login(user);
+    }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() patient: Partial<Patient>) {

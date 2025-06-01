@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../authStatus/useAuth";
 import axios from "axios";
-import './LoginPage.css';
+import "./LoginPage.css";
 import logo from "./img/logo.png";
 import vkIcon from "./img/icons8-вконтакте.svg";
 import telegramIcon from "./img/logos_telegram.svg";
@@ -13,63 +14,58 @@ const LoginPage = () => {
     rememberMe: false
   });
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setIsLoading(true);
+  e.preventDefault();
+  setError("");
+  setIsLoading(true);
 
-    try {
-      // Отправляем данные на бэкенд
-      const response = await axios.post("http://localhost:3000/patients/login", formData);
+  try {
+    const response = await axios.post("http://localhost:3000/patients/login", formData);
+    console.log("Успешный вход:", response.data);
 
-      // Обрабатываем успешный ответ
-      console.log("Успешный вход:", response.data);
-      alert("Успешный вход!")
-      
-      // Сохраняем токен, если нужно
-      if (response.data.accessToken) {
-        localStorage.setItem("token", response.data.accessToken);
-        
-        // Если стоит галочка "Запомнить меня", сохраняем токен долгосрочно
-        if (formData.rememberMe) {
-          localStorage.setItem("rememberMe", "true");
-        }
+    if (response.data.access_token) {
+      login(response.data.access_token, {
+        first_name: response.data.user.first_name,
+        last_name: response.data.user.last_name,
+        email: formData.email
+      });
+
+      // Дополнительное сохранение для "Запомнить меня"
+      if (formData.rememberMe) {
+        localStorage.setItem("rememberMe", "true");
       }
-
-      navigate("/registration"); // Замените на нужный вам защищенный маршрут
-
-    } catch (err) {
-      // Правильная обработка ошибок для TypeScript
-      if (axios.isAxiosError(err)) {
-        // Ошибка Axios (HTTP ошибка)
-        setError(err.response?.data?.message || "Произошла ошибка при входе");
-        console.error("Ошибка Axios:", err.response?.data);
-        alert("Неправильный пароль!")
-      } else if (err instanceof Error) {
-        // Нативная ошибка JavaScript
-        setError(err.message);
-        console.error("Ошибка:", err.message);
-      } else {
-        // Неизвестная ошибка
-        setError("Произошла неизвестная ошибка");
-        console.error("Неизвестная ошибка:", err);
-      }
-    } finally {
-      setIsLoading(false);
     }
-  };
+    navigate("/#"); // Перенаправляем на главную страницу вместо /registration
+
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      setError(err.response?.data?.message || "Произошла ошибка при входе");
+      console.error("Ошибка Axios:", err.response?.data);
+      alert("Неправильный логин или пароль!");
+    } else if (err instanceof Error) {
+      setError(err.message);
+      console.error("Ошибка:", err.message);
+    } else {
+      setError("Произошла неизвестная ошибка");
+      console.error("Неизвестная ошибка:", err);
+    }
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div className="container">

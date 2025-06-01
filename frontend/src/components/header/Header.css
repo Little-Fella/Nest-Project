@@ -10,11 +10,6 @@
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
   
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
   
   body {
     font-family: var(--font-family-base), serif;
@@ -30,6 +25,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 120px;
     padding-top: 10px;
     padding: 8px 10%;
     background-color: white;
