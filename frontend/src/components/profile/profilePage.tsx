@@ -1,9 +1,209 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import "./profilePage.css"
 import logo from "./img/DENT.svg";
 
+interface UserData {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone?: string;
+  birth_date?: string;
+  updatedAt: string;
+}
+
+interface LocalStorageUser {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+
+interface EditFieldModalProps {
+  fieldName: string;
+  currentValue: string;
+  onSave: (newValue: string) => Promise<void>;
+  onClose: () => void;
+}
+
+const EditFieldModal: React.FC<EditFieldModalProps> = ({ 
+  fieldName, 
+  currentValue, 
+  onSave, 
+  onClose 
+}) => {
+  const [value, setValue] = useState(currentValue);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSave = async () => {
+    if (!value.trim()) {
+      setError('Поле не может быть пустым');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await onSave(value);
+    } catch (err) {
+      setError('Ошибка при сохранении. Попробуйте еще раз.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Закрытие по клику вне модального окна
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  // Закрытие по ESC
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  return (
+    <div 
+      className="modalOverlay" 
+      onClick={handleOverlayClick}
+    >
+      <div className="modalContent">
+        <h3 className="modalHeader">Изменить {fieldName}</h3>
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => {
+            setValue(e.target.value);
+            setError('');
+          }}
+          className="modalInput"
+          autoFocus
+          onKeyDown={(e) => e.key === 'Enter' && handleSave()}
+        />
+        {error && <div className="error">{error}</div>}
+        <div className="modalButtons">
+          <button 
+            onClick={handleSave} 
+            disabled={loading}
+            className="saveButton"
+          >
+            {loading ? 'Сохранение...' : 'Сохранить'}
+          </button>
+          <button 
+            onClick={onClose} 
+            disabled={loading}
+            className="cancelButton"
+          >
+            Отмена
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const UserProfilePage: React.FC = () => {
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [editingField, setEditingField] = useState<{
+    field: keyof UserData;
+    value: string;
+  } | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // Получаем данные пользователя из localStorage
+        const userString = localStorage.getItem('user');
+        if (!userString) {
+          throw new Error('Данные пользователя не найдены в localStorage');
+        }
+
+        const localStorageUser: LocalStorageUser = JSON.parse(userString);
+        const userId = localStorageUser.id;
+
+        if (!userId) {
+          throw new Error('ID пользователя не найден в данных');
+        }
+
+        const response = await axios.get(`http://localhost:3000/patients/${userId}`);
+        setUserData(response.data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Произошла неизвестная ошибка');
+        console.error('Ошибка при загрузке данных:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  if (loading) {
+    return <div className="loading">Загрузка данных...</div>;
+  }
+
+  if (error) {
+    return <div className="error">Ошибка: {error}</div>;
+  }
+
+  if (!userData) {
+    return <div className="error">Данные пользователя не найдены</div>;
+  }
+
+  const handleEditClick = (field: keyof UserData, value: string) => {
+    setEditingField({ field, value });
+  };
+
+  const handleCloseModal = () => {
+    setEditingField(null);
+  };
+
+  const handleSaveChanges = async (field: keyof UserData, newValue: string) => {
+    if (!userData) return;
+
+    try {
+      const userId = userData.id;
+      const updatedData = { ...userData, [field]: newValue };
+      
+      await axios.put(`http://localhost:3000/patients/${userId}`, updatedData);
+      
+      setUserData(updatedData);
+      // Обновляем данные в localStorage если менялось имя/фамилия
+      if (field === 'first_name' || field === 'last_name') {
+        const userString = localStorage.getItem('user');
+        if (userString) {
+          const user = JSON.parse(userString);
+          user[field] = newValue;
+          localStorage.setItem('user', JSON.stringify(user));
+        }
+      }
+    } catch (err) {
+      console.error('Ошибка при обновлении данных:', err);
+      throw err;
+    }
+  };
+
+  const handleLogout = () => {
+  localStorage.removeItem('user');
+  localStorage.removeItem('access_token');
+  navigate("/#");
+  };
+
   return (
     <div>
       <header>
@@ -17,31 +217,56 @@ const UserProfilePage: React.FC = () => {
           <h2 className="your-data-header">Ваши Данные:</h2>
           <div className="your-data-container">
             <div className="your-data-item">
-              <p>Имя: </p>
-              <button className="change-button">Сменить</button>
+              <p>Имя: {userData.first_name}</p>
+              <button 
+                className="change-button"
+                onClick={() => handleEditClick('first_name', userData.first_name)}
+              >
+                Сменить
+              </button>
             </div>
             <div className="your-data-item">
-              <p>Фамилия: </p>
-              <button className="change-button">Сменить</button>
+              <p>Фамилия: {userData.last_name}</p>
+              <button 
+                className="change-button"
+                onClick={() => handleEditClick('last_name', userData.last_name)}
+              >
+                Сменить
+              </button>
             </div>
             <div className="your-data-item">
-              <p>Электронная почта: </p>
-              <button className="change-button">Сменить</button>
+              <p>Электронная почта: {userData.email}</p>
+              <button 
+                className="change-button"
+                onClick={() => handleEditClick('email', userData.email)}
+              >
+                Сменить
+              </button>
             </div>
             <div className="your-data-item">
-              <p>Пароль: </p>
-              <button className="change-button">Сменить</button>
+              <p>Пароль: ***********</p>
+              <button className="change-button">Пока-что нельзя сменить</button>
             </div>
             <div className="your-data-item">
-              <p>Номер телефона: </p>
-              <button className="change-button">Сменить</button>
+              <p>Номер телефона: {userData.phone || 'не указан'}</p>
+              <button 
+                className="change-button"
+                onClick={() => handleEditClick('phone', userData.phone || 'Не указан')}
+              >
+                Сменить
+              </button>
             </div>
             <div className="your-data-item">
-              <p>Дата рождения: </p>
-              <button className="change-button">Сменить</button>
+              <p>Дата рождения: {userData.birth_date}</p>
+              <button 
+                className="change-button"
+                onClick={() => handleEditClick('birth_date', userData.birth_date || 'Не указана')}
+              >
+                Сменить
+              </button>
             </div>
             <div className="your-data-item">
-              <p>Последнее обновления профиля: </p>
+              <p>Последнее обновления профиля: {userData.updatedAt}</p>
             </div>
           </div>
         </section>
@@ -63,7 +288,15 @@ const UserProfilePage: React.FC = () => {
         </section> 
       </div>
       
-      <button className="exit-button">Выйти из аккаунта</button>
+      <button className="exit-button" onClick={handleLogout}>Выйти из аккаунта</button>
+      {editingField && (
+        <EditFieldModal
+          fieldName={editingField.field.replace('_', ' ')}
+          currentValue={editingField.value}
+          onSave={async (newValue) => handleSaveChanges(editingField.field, newValue)}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 };

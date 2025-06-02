@@ -26,6 +26,20 @@ header {
     margin-right: 40px;
 }
 
+.loading {
+  padding: 20px;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.error {
+  padding: 20px;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #ff0000;
+}
+
 .back-button {
     height: fit-content;
     margin-top: 60px;
@@ -74,15 +88,13 @@ section {
     border: none;
     background-color: var(--background);
     color: var(--accent);
-    margin-left: 70px;
-    cursor: pointer;
+    margin-left: 20px;
 }
 
 .change-button:hover {
     border-radius: var(--radius);
     background-color: var(--background);
     color: #203247;
-    margin-left: 70px;
     cursor: pointer;
 }
 
@@ -160,3 +172,105 @@ section {
     border-color: #FF7D7D;
     cursor: pointer;
 }  
+
+
+
+/* Стили для модального окна */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Очень высокий z-index чтобы быть поверх всего */
+}
+
+.modalContent {
+  background-color: white;
+  padding: 25px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  position: relative;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modalHeader {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.modalInput {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.modalInput:focus {
+  border-color: var(--button);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.saveButton {
+  background-color: var(--accent);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.saveButton:hover {
+  background-color: var(--button);
+}
+
+.saveButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.cancelButton:hover {
+  background-color: #d32f2f;
+}

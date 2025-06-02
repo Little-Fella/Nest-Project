@@ -38,6 +38,7 @@ const LoginPage = () => {
 
     if (response.data.access_token) {
       login(response.data.access_token, {
+        id: response.data.user.id,
         first_name: response.data.user.first_name,
         last_name: response.data.user.last_name,
         email: formData.email

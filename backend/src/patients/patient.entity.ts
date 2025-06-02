@@ -21,7 +21,7 @@ export class Patient {
   @Column({ type: 'varchar', length: 255, unique: true })
   email: string;
 
-  @Column({ type: 'varchar', length: 255, select: false }) // select: false исключит поле из выборок по умолчанию
+  @Column({ type: 'varchar', length: 255, select: true })
   password: string;
 
   @Column({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
