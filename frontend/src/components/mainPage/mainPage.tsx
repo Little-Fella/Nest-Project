@@ -1,5 +1,6 @@
 // src/pages/Home.tsx
 import React, { useEffect } from "react";
+import { Link } from 'react-router-dom';
 import { useServices } from "./hooks/useServices";
 import { useHamburgerMenu } from "./hooks/useHamburgerMenu";
 import { useFAQ } from "./hooks/useFAQ";
@@ -77,9 +78,9 @@ const Home: React.FC = () => {
               Мы создаем улыбки, которые
               <br /> меняют жизни людей
             </p>
-            {/* <Link to="/appointment" className="record">
+            <Link to="/appointment" className="record">
               Записаться на приём
-            </Link> */}
+            </Link>
           </div>
           <div className="header-info-blocks">
             <div className="header-info-left-block">
@@ -92,7 +93,7 @@ const Home: React.FC = () => {
             <div className="header-info-right-block">
               <div className="header-info-right-block-top">
                 <p className="header-info-block-number">10</p>
-                <p className="header-info-text">
+                <p className="header-info-text-t">
                   лет
                   <br /> опыта
                 </p>

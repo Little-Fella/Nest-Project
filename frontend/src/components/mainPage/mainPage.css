@@ -29,7 +29,7 @@
     --text-dark: #111;
     --text-light: #686868;
     --button: #39add2;
-    --radius: 20px;
+    --radius: 30px;
     --font-family-base: Rubik, sans-serif;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
@@ -51,6 +51,15 @@
     margin: 0 auto; /* Центрирование контента */
     width: 100%;
     overflow-x: hidden; /* Предотвращает горизонтальный скролл */
+  }
+  
+  img {
+    border-radius: var(--radius);
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
   }
   
   .home {
@@ -781,6 +790,20 @@
   
   /* Адаптация для десктопов (1920x1080 и больше) */
   @media (min-width: 1600px) {
+    :root {
+      --radius: 50px;
+    }
+    
+    .card, 
+.header-info-left-block, 
+.header-info-right-block, 
+.record, 
+.service-btn, 
+.ans, 
+.qq-card, 
+.slider-container {
+  border-radius: var(--radius); /* Теперь радиус будет меняться автоматически */
+}
     main {
       padding: 0px 8%;
       margin: 0 auto;
@@ -799,7 +822,7 @@
     }
   
     .login {
-      border-radius: 30px;
+      border-radius: 60px;
       padding: 0.8rem 1.5rem;
       font-size: 25px;
     }
@@ -809,17 +832,22 @@
       margin: 2rem 0;
     }
   
+    .header-info-blocks {
+      gap: 20px;
+    }
     .header-info-block {
       max-width: 600px;
-      height: 590px;
+      height: fit-content;
     }
   
     .header-info-block-text {
-      padding: 20px 40px;
+      padding: 30px 40px;
+      margin-bottom: 20px;
     }
   
     .header-info-number {
       font-size: 80px;
+      margin: 0px 0 0 0; 
     }
   
     .header-info-block-title {
@@ -830,16 +858,20 @@
     .header-info-text {
       font-size: 24px;
       line-height: 1.4;
+      margin: 20px 0;
     }
-  
+
+    .header-info-text-t {
+      font-size: 28px;
+    }
     .header-info-left-block,
     .header-info-right-block {
-      padding: 40px 30px;
-      max-height: 220px;
+      padding: 20px;
+      max-height: 260px;
     }
   
     .header-info-block-number {
-      font-size: 70px;
+      font-size: 80px;
     }
   
     .header-info-img {

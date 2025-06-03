@@ -84,12 +84,3 @@
     text-decoration: none;
     color: #333;
   }
-  
-  .record {
-    padding: 10px 20px;
-    background-color: #009fe3;
-    color: white;
-    border: none;
-    border-radius: var(--radius);
-    cursor: pointer;
-  }
