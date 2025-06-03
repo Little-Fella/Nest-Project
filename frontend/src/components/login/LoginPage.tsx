@@ -69,8 +69,8 @@ const LoginPage = () => {
 };
 
   return (
-    <div className="container">
-      <div className="card">
+    <div className="container-login">
+      <div className="card-login">
         <div className="logo logo-login">
           <img src={logo} alt="Tooth" />
         </div>

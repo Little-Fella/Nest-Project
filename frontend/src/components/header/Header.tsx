@@ -1,6 +1,6 @@
 import logoImg from './DENT.svg';
 import { Link } from "react-router-dom";
-import "./Header.css"
+import "../mainPage/mainPage.css"
 import { AuthStatus } from '../authStatus/authStatus';
 
 export const Header = () => {

@@ -57,7 +57,7 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container-login">
       <div className="card2">
         <div className="logo logo-register">
           <img src={logo} alt="Tooth" />

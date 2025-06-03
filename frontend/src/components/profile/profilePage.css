@@ -58,7 +58,7 @@ header {
     cursor: pointer;
 }
 
-img {
+.img {
     height: 160px;
     width: 160px;
 }
@@ -67,7 +67,7 @@ img {
     display: flex;
 }
 
-section {
+.section {
     width: 50%;
     height: fit-content;
 }

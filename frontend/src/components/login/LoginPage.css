@@ -24,7 +24,7 @@
     background: #e6f6ff;
   }
   
-  .container {
+  .container-login {
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -32,7 +32,7 @@
     padding: 40px 0;
   }
   
-  .card {
+  .card-login {
     background: #fff;
     border-radius: 20px;
     padding: 30px 40px;
@@ -41,7 +41,7 @@
     text-align: center;
   }
   
-  .card2 {
+  .card2-login {
     background: #fff;
     border-radius: 20px;
     padding: 30px 40px;

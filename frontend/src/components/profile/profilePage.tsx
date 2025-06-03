@@ -213,7 +213,7 @@ const UserProfilePage: React.FC = () => {
       
       <div className="sections-container">
         {/* Секция с данными пользователя */}
-        <section>
+        <section className='section'>
           <h2 className="your-data-header">Ваши Данные:</h2>
           <div className="your-data-container">
             <div className="your-data-item">
