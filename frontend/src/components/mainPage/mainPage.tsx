@@ -74,7 +74,7 @@ const Home: React.FC = () => {
           <div className="header-info-block-text">
             <p className="header-info-number">1000+</p>
             <p className="header-info-block-title">здоровых улыбок</p>
-            <p className="header-info-text">
+            <p className="header-info-text-i">
               Мы создаем улыбки, которые
               <br /> меняют жизни людей
             </p>

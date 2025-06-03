@@ -135,13 +135,16 @@
   
   .header-info-block-title {
     font-size: 35px;
-    margin-bottom: 8px;
   }
   
   .header-info-text {
     font-size: 18px;
   }
   
+  .header-info-text-i {
+    font-size: 18px;
+    padding: 20px;
+  }
   .header-info-blocks {
     display: flex;
     gap: 10px;
@@ -440,6 +443,7 @@
   .our-works-button-wrapper {
     display: flex;
     justify-content: flex-end;
+    margin-top: 60px;
   }
   
   .our-works-button {
@@ -565,8 +569,8 @@
   /* Увеличенные и исправленные карточки */
   .flip-card {
     background-color: transparent;
-    width: 280px;
-    height: 400px;
+    width: 350px;
+    height: 480px;
     perspective: 1000px;
     flex-shrink: 0;
   }
@@ -605,7 +609,7 @@
   
   .flip-card-front img {
     width: 100%;
-    max-height: 250px;
+    max-height: 350px;
     object-fit: cover;
     object-position: top; /* показывать верхнюю часть (голову) */
     border-radius: 10px;
@@ -791,19 +795,9 @@
   /* Адаптация для десктопов (1920x1080 и больше) */
   @media (min-width: 1600px) {
     :root {
-      --radius: 50px;
+      --radius: 20px;
     }
     
-    .card, 
-.header-info-left-block, 
-.header-info-right-block, 
-.record, 
-.service-btn, 
-.ans, 
-.qq-card, 
-.slider-container {
-  border-radius: var(--radius); /* Теперь радиус будет меняться автоматически */
-}
     main {
       padding: 0px 8%;
       margin: 0 auto;
@@ -822,7 +816,7 @@
     }
   
     .login {
-      border-radius: 60px;
+      border-radius: 30px;
       padding: 0.8rem 1.5rem;
       font-size: 25px;
     }
@@ -852,15 +846,16 @@
   
     .header-info-block-title {
       font-size: 45px;
-      margin-bottom: 15px;
     }
   
-    .header-info-text {
+    .header-info-text, .header-info-text-i {
       font-size: 24px;
       line-height: 1.4;
-      margin: 20px 0;
+      padding: 20px 0;
     }
-
+.header-info-text-i {
+  padding-bottom: 30px;
+}
     .header-info-text-t {
       font-size: 28px;
     }
@@ -890,6 +885,7 @@
   
     .item {
       font-size: 29px;
+      border-radius: 30px;
     }
   
     .about-us h3 {
@@ -934,6 +930,9 @@
     .our-works h3 {
       font-size: 2rem;
     }
+    .our-works-button {
+      font-size: 25px;
+    }
     .our-works-text-name,
     .our-works-text-doctor {
       font-size: 25px;
@@ -964,7 +963,7 @@
     }
   
     .record {
-      padding: 12px 40px;
+      padding: 12px 30px;
       font-size: 24px;
       border-radius: 30px;
     }
@@ -993,11 +992,6 @@
   
     .footer p {
       font-size: 18px;
-    }
-  
-    .footer .record {
-      padding: 15px 45px;
-      font-size: 1.2rem;
     }
   }
   

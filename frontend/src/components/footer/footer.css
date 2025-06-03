@@ -45,15 +45,6 @@
     font-weight: 500;
   }
   
-  .login {
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius);
-    cursor: pointer;
-    background-color: var(--background);
-  }
-  
   .footer {
     display: flex;
     width: 100%;
