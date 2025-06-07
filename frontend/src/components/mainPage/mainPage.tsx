@@ -23,6 +23,7 @@ import kariesImage from "./img/karies.jpg";
 import gigienaImage from "./img/gigiena.jpeg";
 import { Footer } from "../footer/footer";
 import { useNavigate } from "react-router-dom";
+
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const { activeQuestion, toggleQuestion } = useFAQ();
@@ -79,7 +80,7 @@ const Home: React.FC = () => {
               Мы создаем улыбки, которые
               <br /> меняют жизни людей
             </p>
-            <button onClick={() => navigate("/clinic")}>
+            <button className="record" onClick={() => navigate("/appointment")}>
               Записаться на прием
             </button>
           </div>

@@ -80,7 +80,6 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center; /* Горизонтальное центрирование */
-  min-height: 100vh; /* Вертикальное центрирование (если нужно) */
   box-sizing: border-box;
 }
 
@@ -95,27 +94,27 @@ img {
 
 .clinic-list {
   flex: 1;
-  min-width: 250px;
 }
 
 .clinic-photo {
   flex: 1;
   min-width: 250px;
-  max-width: 400px;
+  max-width: 600px;
 }
 
 .clinic-photo img {
-  width: 100%;
-  height: auto;
+  width: 500px;
+  height: 300px;
   object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease;
 }
 
 .clinic-address {
   cursor: pointer;
   margin-bottom: 16px;
-  font-size: 16px;
+  font-size: 20px;
   padding-bottom: 6px;
   transition: color 0.3s;
 }
@@ -152,16 +151,19 @@ img {
 }
 
 .select-button {
-  background-color: white;
-  border: 2px solid #999;
-  padding: 8px 16px;
+  background-color: var(--button);
+  border: none;
+  color: white;
+  padding: 8px 30px;
+  border-radius: var(--radius);
   cursor: pointer;
-  border-radius: 6px;
-  transition: background-color 0.2s;
+  font-size: 15px;
+  text-align: center;
+  margin: 10px;
 }
 
 .select-button:hover {
-  background-color: #eee;
+  background-color: var(--accent);
 }
 
 .option-grid {
@@ -194,6 +196,247 @@ img {
 }
 
 .nav-buttons {
+  margin: 2%;
   display: flex;
   gap: 16px;
+  justify-content: center;
+}
+
+/* Стили для выбора врача */
+.doctor-selector {
+  margin-top: 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.doctor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1500px;
+  margin-top: 20px;
+  padding: 0 20px;
+}
+
+.doctor-card {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.doctor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.doctor-photo {
+  height: 200px;
+  overflow: hidden;
+}
+
+.doctor-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.doctor-card:hover .doctor-photo img {
+  transform: scale(1.05);
+}
+
+.doctor-info {
+  padding: 20px;
+}
+
+.doctor-info h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: var(--text-dark);
+}
+
+.specialty {
+  margin: 0 0 12px 0;
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.stars {
+  color: #ffc107;
+  letter-spacing: 2px;
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+.rating-value {
+  font-weight: bold;
+  color: var(--text-dark);
+}
+
+.doctor-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.experience {
+  color: var(--text-light);
+}
+
+.price {
+  font-weight: bold;
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .doctor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .doctor-photo {
+    height: 160px;
+  }
+}
+
+/* Стили для выбора времени */
+.time-selector {
+  margin-top: 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.appointment-card {
+  background-color: #ffffffdd;
+  padding: 28px 32px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.appointment-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+}
+
+.doctor-info-d {
+  margin-bottom: 20px;
+}
+
+.specialty,
+.experience {
+  margin: 0;
+  color: #555;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.section-d {
+  margin-top: 20px;
+}
+
+.dates {
+  display: flex;
+  gap: 6px;
+  padding: 12px;
+  border: 1.5px solid #888;
+  border-radius: 30px;
+  overflow-x: auto;
+  white-space: nowrap;
+  max-width: 100%;
+  background-color: #fff;
+  margin: 10px 0;
+}
+
+.date-btn {
+  flex: 0 0 auto;
+  padding: 8px 10px;
+  min-width: 48px;
+  height: 48px;
+  background-color: #fff;
+  border: 1.5px solid #ccc;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #000;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  white-space: nowrap;
+}
+
+.date-btn:hover {
+  background-color: #f2f2f2;
+  border-color: #aaa;
+}
+
+.date-btn.active {
+  background-color: rgba(150, 150, 255, 0.15);
+  border-color: #666;
+  font-weight: 700;
+}
+
+.times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.time-btn {
+  padding: 8px 16px;
+  border: 1.8px solid #6fa8dc;
+  background: #f0f8ff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  color: #3178c6;
+  box-shadow: 0 2px 6px rgba(49, 120, 198, 0.2);
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.time-btn:hover {
+  background-color: #d0e7ff;
+  border-color: #1a5dbf;
+  color: #1a5dbf;
+}
+
+.time-btn.active {
+  background-color: #3178c6;
+  border-color: #255a9c;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(49, 120, 198, 0.5);
+}
+
+@media (max-width: 450px) {
+  .appointment-card {
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .date-btn {
+    font-size: 11px;
+    padding: 4px 10px;
+  }
+
+  .time-btn {
+    flex: 1 0 30%;
+    font-size: 13px;
+    padding: 6px 12px;
+  }
 }
