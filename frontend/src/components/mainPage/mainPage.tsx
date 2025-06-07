@@ -1,7 +1,8 @@
 // src/pages/Home.tsx
 import React, { useEffect } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { useServices } from "./hooks/useServices";
+import { useNavigate } from "react-router-dom";
 import { useHamburgerMenu } from "./hooks/useHamburgerMenu";
 import { useFAQ } from "./hooks/useFAQ";
 //import { useModelViewer } from "./hooks/useModelViewer";
@@ -25,6 +26,7 @@ import { Footer } from "../footer/footer";
 import ReviewsSection from "./reviews/reviews";
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
   const { activeQuestion, toggleQuestion } = useFAQ();
 
   const questions = [
@@ -79,9 +81,9 @@ const Home: React.FC = () => {
               Мы создаем улыбки, которые
               <br /> меняют жизни людей
             </p>
-            <Link to="/appointment" className="record">
-              Записаться на приём
-            </Link>
+            <button className="record" onClick={() => navigate("/appointment")}>
+              Записаться на прием
+            </button>
           </div>
           <div className="header-info-blocks">
             <div className="header-info-left-block">
