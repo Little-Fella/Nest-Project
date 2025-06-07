@@ -1,0 +1,199 @@
+:root {
+  --primary: #b9eafa;
+  --accent: #297e99;
+  --background: white;
+  --text-dark: #111;
+  --text-light: #686868;
+  --button: #39add2;
+  --radius: 30px;
+  --font-family-base: Rubik, sans-serif;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  outline: none;
+  box-shadow: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+main {
+  font-family: var(--font-family-base), serif;
+  background-color: var(--background);
+  color: var(--text-dark);
+  min-width: 320px; /* Минимальная ширина для мобильных устройств */
+  max-width: 1920px; /* Максимальная ширина для больших экранов */
+  margin: 0 auto; /* Центрирование контента */
+  width: 100%;
+  overflow-x: hidden; /* Предотвращает горизонтальный скролл */
+}
+
+img {
+  border-radius: var(--radius);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.home {
+  padding: 0px 5%;
+}
+
+.progress-stepper {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #888;
+}
+
+.circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ccc;
+  margin-bottom: 8px;
+  transition: background 0.3s;
+}
+
+.step.active .circle {
+  background: #007aff;
+}
+
+.step.active .label {
+  font-weight: bold;
+  color: #007aff;
+}
+
+.clinic-selector {
+  margin-top: 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Горизонтальное центрирование */
+  min-height: 100vh; /* Вертикальное центрирование (если нужно) */
+  box-sizing: border-box;
+}
+
+.clinic-content {
+  display: flex;
+  gap: 40px;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.clinic-list {
+  flex: 1;
+  min-width: 250px;
+}
+
+.clinic-photo {
+  flex: 1;
+  min-width: 250px;
+  max-width: 400px;
+}
+
+.clinic-photo img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.clinic-address {
+  cursor: pointer;
+  margin-bottom: 16px;
+  font-size: 16px;
+  padding-bottom: 6px;
+  transition: color 0.3s;
+}
+
+.underline {
+  height: 2px;
+  background-color: #0057ff;
+  width: 0;
+  transition: width 0.5s ease;
+}
+
+.clinic-address.selected .underline {
+  width: 100%;
+}
+
+.selection-footer {
+  margin-top: 24px;
+  background-color: #ccc;
+  padding: 16px;
+  width: fit-content;
+  border-radius: 12px;
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.select-button {
+  background-color: white;
+  border: 2px solid #999;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.select-button:hover {
+  background-color: #eee;
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  background-color: #ddd;
+  padding: 24px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  margin-top: 3%;
+}
+
+.option-card {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.option-card:hover {
+  background-color: #007aff;
+  color: white;
+}
+
+.option-card.selected {
+  outline: 3px solid #007aff;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 16px;
+}
