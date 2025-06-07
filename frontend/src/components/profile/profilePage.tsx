@@ -28,6 +28,14 @@ interface EditFieldModalProps {
   onClose: () => void;
 }
 
+interface Appointment {
+  id: number;
+  serviceTitle: string;
+  appointment_date: string;
+  appointment_time: string;
+  status: 'active' | 'completed';
+}
+
 const EditFieldModal: React.FC<EditFieldModalProps> = ({ 
   fieldName, 
   currentValue, 
@@ -55,14 +63,12 @@ const EditFieldModal: React.FC<EditFieldModalProps> = ({
     }
   };
 
-  // Закрытие по клику вне модального окна
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
 
-  // Закрытие по ESC
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -116,54 +122,58 @@ const EditFieldModal: React.FC<EditFieldModalProps> = ({
 
 const UserProfilePage: React.FC = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [appointmentsLoading, setAppointmentsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [appointmentsError, setAppointmentsError] = useState<string | null>(null);
   const [editingField, setEditingField] = useState<{
     field: keyof UserData;
     value: string;
   } | null>(null);
+  const [activeFilter, setActiveFilter] = useState<'all' | 'active' | 'completed'>('all');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        // Получаем данные пользователя из localStorage
-        const userString = localStorage.getItem('user');
-        if (!userString) {
-          throw new Error('Данные пользователя не найдены в localStorage');
-        }
-
-        const localStorageUser: LocalStorageUser = JSON.parse(userString);
-        const userId = localStorageUser.id;
-
-        if (!userId) {
-          throw new Error('ID пользователя не найден в данных');
-        }
-
-        const response = await axios.get(`http://localhost:3000/patients/${userId}`);
-        setUserData(response.data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Произошла неизвестная ошибка');
-        console.error('Ошибка при загрузке данных:', err);
-      } finally {
-        setLoading(false);
+  const fetchUserData = async () => {
+    try {
+      const userString = localStorage.getItem('user');
+      if (!userString) {
+        throw new Error('Данные пользователя не найдены в localStorage');
       }
-    };
 
-    fetchUserData();
-  }, []);
+      const localStorageUser: LocalStorageUser = JSON.parse(userString);
+      const userId = localStorageUser.id;
 
-  if (loading) {
-    return <div className="loading">Загрузка данных...</div>;
-  }
+      if (!userId) {
+        throw new Error('ID пользователя не найден в данных');
+      }
 
-  if (error) {
-    return <div className="error">Ошибка: {error}</div>;
-  }
+      const userResponse = await axios.get(`http://localhost:3000/patients/${userId}`);
+      setUserData(userResponse.data);
+      
+      try {
+        const appointmentsResponse = await axios.get(`http://localhost:3000/appointments/patient/${userId}`);
+        setAppointments(appointmentsResponse.data);
+      } catch (appointmentsError) {
+        if (axios.isAxiosError(appointmentsError) && appointmentsError.response?.status === 404) {
+          setAppointments([]);
+        } else {
+          throw appointmentsError;
+        }
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Произошла неизвестная ошибка';
+      setError(errorMessage);
+      console.error('Ошибка при загрузке данных:', err);
+    } finally {
+      setLoading(false);
+      setAppointmentsLoading(false);
+    }
+  };
 
-  if (!userData) {
-    return <div className="error">Данные пользователя не найдены</div>;
-  }
+  fetchUserData();
+}, []);
 
   const handleEditClick = (field: keyof UserData, value: string) => {
     setEditingField({ field, value });
@@ -183,7 +193,6 @@ const UserProfilePage: React.FC = () => {
       await axios.put(`http://localhost:3000/patients/${userId}`, updatedData);
       
       setUserData(updatedData);
-      // Обновляем данные в localStorage если менялось имя/фамилия
       if (field === 'first_name' || field === 'last_name') {
         const userString = localStorage.getItem('user');
         if (userString) {
@@ -199,10 +208,27 @@ const UserProfilePage: React.FC = () => {
   };
 
   const handleLogout = () => {
-  localStorage.removeItem('user');
-  localStorage.removeItem('access_token');
-  navigate("/#");
+    localStorage.removeItem('user');
+    localStorage.removeItem('access_token');
+    navigate("/#");
   };
+
+  const filteredAppointments = appointments.filter(appointment => {
+    if (activeFilter === 'all') return true;
+    return appointment.status === activeFilter;
+  });
+
+  if (loading) {
+    return <div className="loading">Загрузка данных...</div>;
+  }
+
+  if (error) {
+    return <div className="error">Ошибка: {error}</div>;
+  }
+
+  if (!userData) {
+    return <div className="error">Данные пользователя не найдены</div>;
+  }
 
   return (
     <div>
@@ -273,19 +299,53 @@ const UserProfilePage: React.FC = () => {
 
         {/* Секция с записями пользователя */}
         <section>
-          <h2 className="your-data-header">Ваши Записи:</h2>
-          <div className="filter-section">
-            <button className="filter-button">Активные</button>
-            <button className="filter-button">Завершённые</button>  
-          </div>
-          <div className="appointments-section">
-            <p className="appointment-item"> ID name appoitment_date:appointment_time status</p>
-          </div>
-          <div className="controll-section">
-            <button className="controll-button">Назад</button>
-            <button className="controll-button">Вперёд</button> 
-          </div>
-        </section> 
+        <h2 className="your-data-header">Ваши Записи:</h2>
+        <div className="filter-section">
+          <button 
+            className={`filter-button ${activeFilter === 'all' ? 'active' : ''}`}
+            onClick={() => setActiveFilter('all')}
+          >
+            Все записи
+          </button>
+          <button 
+            className={`filter-button ${activeFilter === 'active' ? 'active' : ''}`}
+            onClick={() => setActiveFilter('active')}
+          >
+            Активные
+          </button>
+          <button 
+            className={`filter-button ${activeFilter === 'completed' ? 'active' : ''}`}
+            onClick={() => setActiveFilter('completed')}
+          >
+            Завершённые
+          </button>  
+        </div>
+        <div className="appointments-section">
+          {appointmentsLoading ? (
+            <p>Загрузка записей...</p>
+          ) : appointmentsError ? (
+            <p className="error">Ошибка загрузки записей: {appointmentsError}</p>
+          ) : filteredAppointments.length > 0 ? (
+            <div className="appointments-list">
+              {filteredAppointments.map(appointment => (
+                <div key={appointment.id} className="appointment-item">
+                  <div className="appointment-info">
+                    <span className="appointment-id">ID: {appointment.id}, </span>
+                    <span className="appointment-name">Услуга: {appointment.serviceTitle}, </span>
+                    <span className="appointment-date">
+                      Дата/время: {new Date(appointment.appointment_date).toLocaleDateString()}:{appointment.appointment_time},
+                    </span>
+                    <span className={`appointment-status ${appointment.status}`}> Статус: {appointment.status === 'active' ? 'Активна' : 'Завершена'}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>Нет записей</p>
+          )}
+        </div>
+        {/* Убрал блок с пагинацией, так как показываем все записи */}
+      </section> 
       </div>
       
       <button className="exit-button" onClick={handleLogout}>Выйти из аккаунта</button>

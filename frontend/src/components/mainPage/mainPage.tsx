@@ -22,6 +22,7 @@ import implantacijaImage from "./img/implantacija-na-3d-illjustracii-.jpg";
 import kariesImage from "./img/karies.jpg";
 import gigienaImage from "./img/gigiena.jpeg";
 import { Footer } from "../footer/footer";
+import ReviewsSection from "./reviews/reviews";
 
 const Home: React.FC = () => {
   const { activeQuestion, toggleQuestion } = useFAQ();
@@ -413,6 +414,9 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Reviews Section */}    
+      <ReviewsSection />
 
       {/* FAQ Section */}
       <section id="asks" className="qq">

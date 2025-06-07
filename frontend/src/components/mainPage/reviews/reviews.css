@@ -1,0 +1,152 @@
+.reviews-section {
+  text-align: center;
+  max-width: 1920px;
+  margin: 0 auto;
+  margin-bottom: 40px;
+}
+
+.reviews-title {
+  color: #000000; /* Чёрный цвет */
+  font-size: 32px;
+  margin: 30px 0 40px 20px;
+  text-align: left;
+}
+
+.reviews-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  position: relative;
+}
+
+.review-card {
+  background: #F5FAFF;
+  border-radius: 8px;
+  padding: 1.5rem;
+  width: 500px;
+  height: 250px; /* Фиксированная высота */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.5s ease, opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  min-height: 40px;
+}
+
+.review-header h3 {
+  font-size: 1.2rem;
+  margin: 0;
+  color: #2c3e50;
+  margin-right: 1rem;
+}
+
+.review-content-wrapper {
+  flex-grow: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.review-content {
+  text-align: left;
+  line-height: 1.5;
+  font-size: 1rem;
+  color: #555;
+  margin: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 8; /* Ограничение количества строк */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 100%;
+}
+
+.stars {
+  display: flex;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.star-filled {
+  font-size: 40px;
+  color: #ffc107;
+}
+
+.star-empty {
+  font-size: 40px;
+  color: #e4e5e9;
+}
+
+.nav-button {
+  background: #4a6fa5;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nav-button:hover:not(:disabled) {
+  background: #3a5a80;
+  transform: scale(1.05);
+}
+
+.nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.right-slide {
+  animation: slideInRight 0.5s ease forwards;
+}
+
+.left-slide {
+  animation: slideInLeft 0.5s ease forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.reviews-loading,
+.reviews-error,
+.reviews-empty {
+  font-size: 1.1rem;
+  color: #666;
+  padding: 1.5rem;
+  text-align: center;
+}
