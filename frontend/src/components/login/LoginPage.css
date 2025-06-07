@@ -50,6 +50,11 @@
     text-align: center;
   }
   
+  h2 {
+    font-size: 22px;
+    color: #003366;
+  }
+
   .card h2 {
     color: #003366;
     font-size: 22px;

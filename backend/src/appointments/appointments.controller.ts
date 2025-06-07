@@ -18,6 +18,24 @@ export class AppointmentsController {
         }
         return appointment;
     }
+    
+    @Get('patient/:patientId')
+    async findByPatientId(@Param('patientId') patientId: string) {
+        const appointments = await this.appointmentsService.findByPatientId(+patientId);
+        if (!appointments || appointments.length === 0) {
+            throw new NotFoundException('No appointments found for this patient');
+        }
+        return appointments;
+    }
+
+    @Put(':id/complete')
+    async markAsCompleted(@Param('id') id: string) {
+        const updatedAppointment = await this.appointmentsService.markAsCompleted(+id);
+        if (!updatedAppointment) {
+            throw new NotFoundException('Appointment not found');
+        }
+        return updatedAppointment;
+    }
 
     @Post()
     async create(@Body() appointment: any) {
