@@ -50,6 +50,29 @@ export class AppointmentsService {
         return result[0];
     }
 
+    async findByPatientId(patientId: number): Promise<any[]> {
+        const query = `
+        SELECT
+            a.id,
+            a.appointment_date as "appointment_date",
+            a.appointment_time as "appointment_time",
+            a.status,
+            a.created_at as "createdAt",
+            a.updated_at as "updatedAt",
+            p.id as "patientId",
+            p.first_name as "patientFirstName",
+            p.last_name as "patientLastName",
+            s.id as "serviceId",
+            s.title as "serviceTitle"
+        FROM appointments a
+        JOIN patients p ON a.patient_id = p.id
+        JOIN services s ON a.service_id = s.id
+        WHERE a.patient_id = $1
+        ORDER BY a.created_at DESC
+        `;
+        return await this.connection.query(query, [patientId]);
+    }
+
     async create(appointment: {
         patient_id: number;
         service_id: number;
@@ -85,6 +108,25 @@ export class AppointmentsService {
         }
         return result[0];
     }
+
+    async markAsCompleted(id: number): Promise<any> {
+    const checkQuery = `SELECT id FROM appointments WHERE id = $1`;
+    const checkResult = await this.connection.query(checkQuery, [id]);
+    
+    if (checkResult.length === 0) {
+        return null;
+    }
+
+    const updateQuery = `
+        UPDATE appointments 
+        SET status = 'completed', updated_at = NOW()
+        WHERE id = $1
+        RETURNING *
+    `;
+    const result = await this.connection.query(updateQuery, [id]);
+    
+    return result[0];
+}
 
     async remove(id: number): Promise<void> {
         const query = 'DELETE FROM appointments WHERE id = $1';
