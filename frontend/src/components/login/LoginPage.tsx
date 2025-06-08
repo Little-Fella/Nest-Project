@@ -28,45 +28,48 @@ const LoginPage = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setError("");
-  setIsLoading(true);
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
-  try {
-    const response = await axios.post("http://localhost:3000/patients/login", formData);
-    console.log("Успешный вход:", response.data);
-
-    if (response.data.access_token) {
-      login(response.data.access_token, {
-        id: response.data.user.id,
-        first_name: response.data.user.first_name,
-        last_name: response.data.user.last_name,
-        email: formData.email
+    try {
+      const response = await axios.post("http://localhost:3000/patients/login", {
+        email: formData.email,
+        password: formData.password
       });
+      console.log("Успешный вход:", response.data);
 
-      // Дополнительное сохранение для "Запомнить меня"
-      if (formData.rememberMe) {
-        localStorage.setItem("rememberMe", "true");
+      if (response.data.access_token) {
+        login(
+          response.data.access_token, 
+          {
+            id: response.data.user.id,
+            first_name: response.data.user.first_name,
+            last_name: response.data.user.last_name,
+            email: formData.email
+          },
+          formData.rememberMe
+        );
+
       }
-    }
-    navigate("/#"); // Перенаправляем на главную страницу вместо /registration
+      navigate("/");
 
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      setError(err.response?.data?.message || "Произошла ошибка при входе");
-      console.error("Ошибка Axios:", err.response?.data);
-      alert("Неправильный логин или пароль!");
-    } else if (err instanceof Error) {
-      setError(err.message);
-      console.error("Ошибка:", err.message);
-    } else {
-      setError("Произошла неизвестная ошибка");
-      console.error("Неизвестная ошибка:", err);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || "Произошла ошибка при входе");
+        console.error("Ошибка Axios:", err.response?.data);
+        alert("Неправильный логин или пароль!");
+      } else if (err instanceof Error) {
+        setError(err.message);
+        console.error("Ошибка:", err.message);
+      } else {
+        setError("Произошла неизвестная ошибка");
+        console.error("Неизвестная ошибка:", err);
+      }
+    } finally {
+      setIsLoading(false);
     }
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
 
   return (
     <div className="container-login">

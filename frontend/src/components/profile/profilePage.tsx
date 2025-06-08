@@ -137,13 +137,15 @@ const UserProfilePage: React.FC = () => {
   useEffect(() => {
   const fetchUserData = async () => {
     try {
-      const userString = localStorage.getItem('user');
+      // Проверяем оба хранилища
+      const userString = localStorage.getItem('user') || sessionStorage.getItem('user');
+      
       if (!userString) {
-        throw new Error('Данные пользователя не найдены в localStorage');
+        throw new Error('Данные пользователя не найдены');
       }
 
-      const localStorageUser: LocalStorageUser = JSON.parse(userString);
-      const userId = localStorageUser.id;
+      const user: LocalStorageUser = JSON.parse(userString);
+      const userId = user.id;
 
       if (!userId) {
         throw new Error('ID пользователя не найден в данных');
@@ -166,6 +168,11 @@ const UserProfilePage: React.FC = () => {
       const errorMessage = err instanceof Error ? err.message : 'Произошла неизвестная ошибка';
       setError(errorMessage);
       console.error('Ошибка при загрузке данных:', err);
+      
+      // Если ошибка связана с отсутствием данных, можно перенаправить на страницу входа
+      if (err instanceof Error && err.message.includes('не найдены')) {
+        navigate('/login');
+      }
     } finally {
       setLoading(false);
       setAppointmentsLoading(false);
@@ -173,7 +180,7 @@ const UserProfilePage: React.FC = () => {
   };
 
   fetchUserData();
-}, []);
+}, []); 
 
   const handleEditClick = (field: keyof UserData, value: string) => {
     setEditingField({ field, value });
