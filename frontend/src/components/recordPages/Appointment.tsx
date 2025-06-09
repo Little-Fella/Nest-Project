@@ -325,6 +325,7 @@ export const AppointmentWizard: React.FC = () => {
     const date = new Date(slot.serviceDate).toISOString().split('T')[0];
     if (!acc[date]) {
       acc[date] = [];
+
     }
     acc[date].push(slot);
     return acc;
