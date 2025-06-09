@@ -30,6 +30,14 @@ export class DentistsController {
         return this.dentistsService.findByClinicId(+clinicId);
     }
 
+    @Get('clinic/:clinic_id/specialization/:specialization')
+        findByClinicAndSpecialization(
+        @Param('clinic_id') clinicId: string,
+        @Param('specialization') specialization: string
+        ) {
+            return this.dentistsService.findByClinicAndSpecialization(+clinicId, specialization);
+    }
+
     @Post()
     create(@Body() dentist: Omit<Dentist, 'id' | 'createdAt' | 'updatedAt'>) {
         return this.dentistsService.create(dentist);

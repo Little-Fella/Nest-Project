@@ -31,17 +31,13 @@ export const useAuth = () => {
 
     const login = (access_token: string, user: UserData, rememberMe: boolean) => {
         if (rememberMe) {
-            // Сохраняем в localStorage если "Запомнить меня" включено
             localStorage.setItem('access_token', access_token);
             localStorage.setItem('user', JSON.stringify(user));
-            // Очищаем sessionStorage на случай, если там были данные
             sessionStorage.removeItem('access_token');
             sessionStorage.removeItem('user');
         } else {
-            // Сохраняем в sessionStorage если "Запомнить меня" выключено
             sessionStorage.setItem('access_token', access_token);
             sessionStorage.setItem('user', JSON.stringify(user));
-            // Очищаем localStorage на случай, если там были данные
             localStorage.removeItem('access_token');
             localStorage.removeItem('user');
         }
@@ -50,7 +46,6 @@ export const useAuth = () => {
     }
 
     const logout = () => {
-        // Очищаем оба хранилища при выходе
         localStorage.removeItem('access_token');
         localStorage.removeItem('user');
         sessionStorage.removeItem('access_token');
@@ -59,5 +54,5 @@ export const useAuth = () => {
         setUser(null);
     };
 
-    return { token, user, isLoading, login, logout };
+    return { token, user, isLoading, login, logout};
 };

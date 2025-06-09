@@ -11,28 +11,132 @@ export class DentistsService {
     ) {}
 
     async findAll(): Promise<Dentist[]> {
-        const query = 'SELECT * FROM dentists';
-        return await this.connection.query(query);
-    }
+    const query = `
+        SELECT
+            d.id,
+            d.first_name as "first_name",
+            d.last_name as "last_name",
+            d.specialization,
+            d.clinic_id as "clinic_id",
+            c.name as "clinicName",
+            c.address as "clinicAddress",
+            d.birth_date as "birth_date",
+            d.email,
+            d.phone,
+            d.rating,
+            d.bio,
+            d.photo_url as "photo_url",
+            d.created_at as "createdAt",
+            d.updated_at as "updatedAt"
+        FROM dentists d
+        LEFT JOIN clinics c ON d.clinic_id = c.id
+    `;
+    return await this.connection.query(query);
+}
 
-    async findOne(id: number): Promise<Dentist> {
-        const query = 'SELECT * FROM dentists WHERE id = $1';
-        const result = await this.connection.query(query, [id]);
-        if (result.length === 0) {
-            throw new NotFoundException(`Dentist with ID ${id} not found`);
-        }
-        return result[0];
+async findOne(id: number): Promise<Dentist> {
+    const query = `
+        SELECT
+            d.id,
+            d.first_name as "first_name",
+            d.last_name as "last_name",
+            d.specialization,
+            d.clinic_id as "clinic_id",
+            c.name as "clinicName",
+            c.address as "clinicAddress",
+            d.birth_date as "birth_date",
+            d.email,
+            d.phone,
+            d.rating,
+            d.bio,
+            d.photo_url as "photo_url",
+            d.created_at as "createdAt",
+            d.updated_at as "updatedAt"
+        FROM dentists d
+        LEFT JOIN clinics c ON d.clinic_id = c.id
+        WHERE d.id = $1
+    `;
+    const result = await this.connection.query(query, [id]);
+    if (result.length === 0) {
+        throw new NotFoundException(`Dentist with ID ${id} not found`);
     }
+    return result[0];
+}
 
-    async findBySpecialization(specialization: string): Promise<Dentist[]> {
-        const query = 'SELECT * FROM dentists WHERE specialization = $1';
-        return await this.connection.query(query, [specialization]);
-    }
+async findBySpecialization(specialization: string): Promise<Dentist[]> {
+    const query = `
+        SELECT
+            d.id,
+            d.first_name as "first_name",
+            d.last_name as "last_name",
+            d.specialization,
+            d.clinic_id as "clinic_id",
+            c.name as "clinicName",
+            c.address as "clinicAddress",
+            d.birth_date as "birth_date",
+            d.email,
+            d.phone,
+            d.rating,
+            d.bio,
+            d.photo_url as "photo_url",
+            d.created_at as "createdAt",
+            d.updated_at as "updatedAt"
+        FROM dentists d
+        LEFT JOIN clinics c ON d.clinic_id = c.id
+        WHERE d.specialization = $1
+    `;
+    return await this.connection.query(query, [specialization]);
+}
 
-    async findByClinicId(clinicId: number): Promise<Dentist[]> {
-        const query = 'SELECT * FROM dentists WHERE clinic_id = $1';
-        return await this.connection.query(query, [clinicId]);
-    }
+async findByClinicId(clinicId: number): Promise<Dentist[]> {
+    const query = `
+        SELECT
+            d.id,
+            d.first_name as "first_name",
+            d.last_name as "last_name",
+            d.specialization,
+            d.clinic_id as "clinic_id",
+            c.name as "clinicName",
+            c.address as "clinicAddress",
+            d.birth_date as "birth_date",
+            d.email,
+            d.phone,
+            d.rating,
+            d.bio,
+            d.photo_url as "photo_url",
+            d.created_at as "createdAt",
+            d.updated_at as "updatedAt"
+        FROM dentists d
+        LEFT JOIN clinics c ON d.clinic_id = c.id
+        WHERE d.clinic_id = $1
+    `;
+    return await this.connection.query(query, [clinicId]);
+}
+
+async findByClinicAndSpecialization(clinicId: number, specialization: string): Promise<Dentist[]> {
+    const query = `
+        SELECT
+            d.id,
+            d.first_name as "first_name",
+            d.last_name as "last_name",
+            d.specialization,
+            d.clinic_id as "clinic_id",
+            c.name as "clinicName",
+            c.address as "clinicAddress",
+            d.birth_date as "birth_date",
+            d.email,
+            d.phone,
+            d.rating,
+            d.bio,
+            d.photo_url as "photo_url",
+            d.created_at as "createdAt",
+            d.updated_at as "updatedAt"
+        FROM dentists d
+        LEFT JOIN clinics c ON d.clinic_id = c.id
+        WHERE d.clinic_id = $1 AND d.specialization = $2
+    `;
+    return await this.connection.query(query, [clinicId, specialization]);
+}
 
     async create(dentist: Omit<Dentist, 'id' | 'createdAt' | 'updatedAt'>): Promise<Dentist> {
         const query = `

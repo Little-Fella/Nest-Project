@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../authStatus/useAuth';
 import "./profilePage.css"
 import logo from "./img/DENT.svg";
 
@@ -132,6 +133,7 @@ const UserProfilePage: React.FC = () => {
     value: string;
   } | null>(null);
   const [activeFilter, setActiveFilter] = useState<'all' | 'active' | 'completed'>('all');
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -215,9 +217,8 @@ const UserProfilePage: React.FC = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('access_token');
-    navigate("/#");
+    logout(); // Это уже очищает оба хранилища (как мы модифицировали ранее)
+    navigate('/login');
   };
 
   const filteredAppointments = appointments.filter(appointment => {
