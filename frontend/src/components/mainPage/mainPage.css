@@ -65,6 +65,34 @@ body {
   margin: 0 auto;
 }
 
+/* Адаптивные заголовки */
+h1 {
+  font-size: calc(var(--base-font-size) * pow(var(--heading-ratio), 3));
+}
+h2 {
+  font-size: calc(var(--base-font-size) * pow(var(--heading-ratio), 2));
+}
+h3 {
+  font-size: calc(var(--base-font-size) * var(--heading-ratio));
+}
+h4 {
+  font-size: var(--base-font-size);
+}
+
+/* Медиа-запросы для адаптивной типографии */
+@media (max-width: 768px) {
+  :root {
+    --base-font-size: 14px;
+    --heading-ratio: 1.2;
+  }
+}
+
+@media (min-width: 1600px) {
+  :root {
+    --base-font-size: 18px;
+    --heading-ratio: 1.3;
+  }
+}
 header.header {
   display: flex;
   justify-content: space-between;
@@ -772,15 +800,17 @@ footer p {
 }
 
 .record {
-  background-color: var(--button);
-  border: none;
+  display: block;
+  margin: 0px auto 0;
+  padding: 12px 40px;
+  background: var(--button);
   color: white;
-  padding: 8px 30px;
+  border: none;
   border-radius: var(--radius);
   cursor: pointer;
-  font-size: 20px;
-  text-align: center;
-  margin: 10px;
+  transition: background 0.3s;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .record:hover {
@@ -792,7 +822,7 @@ footer p {
   :root {
     --radius: 20px;
   }
-  
+
   main {
     padding: 0px 8%;
     margin: 0 auto;
@@ -836,21 +866,22 @@ footer p {
 
   .header-info-number {
     font-size: 80px;
-    margin: 0px 0 0 0; 
+    margin: 0px 0 0 0;
   }
 
   .header-info-block-title {
     font-size: 45px;
   }
 
-  .header-info-text, .header-info-text-i {
+  .header-info-text,
+  .header-info-text-i {
     font-size: 24px;
     line-height: 1.4;
     padding: 20px 0;
   }
-.header-info-text-i {
-padding-bottom: 30px;
-}
+  .header-info-text-i {
+    padding-bottom: 30px;
+  }
   .header-info-text-t {
     font-size: 28px;
   }
@@ -865,7 +896,7 @@ padding-bottom: 30px;
   }
 
   .header-info-img {
-    max-height: 550px;
+    max-height: fit-content;
     margin-left: 350px;
   }
 
@@ -1054,6 +1085,30 @@ padding-bottom: 30px;
   transition: all 0.3s ease;
 }
 
+/* Анимация гамбургера при активном состоянии */
+.hamburger.active .hamburger-line:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.active .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active .hamburger-line:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Стили для меню (если ещё не добавлены) */
+.header-menu {
+  /* ваши существующие стили */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.header-menu.active {
+  /* стили для открытого меню */
+  transform: translateX(0);
+  opacity: 1;
+}
 /* Адаптация для мобильных устройств (до 768px) */
 @media (max-width: 768px) {
   .hamburger {

@@ -24,6 +24,7 @@ import kariesImage from "./img/karies.jpg";
 import gigienaImage from "./img/gigiena.jpeg";
 import { Footer } from "../footer/footer";
 import ReviewsSection from "./reviews/reviews";
+import teeth from "./img/teeth.png";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -146,6 +147,7 @@ const Home: React.FC = () => {
           ></button>
         </model-viewer>
         <div id="tooltip"></div> */}
+        <img className="header-info-img" src={teeth}></img>
       </section>
 
       {/* About Us Section */}
@@ -417,7 +419,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Reviews Section */}    
+      {/* Reviews Section */}
       <ReviewsSection />
 
       {/* FAQ Section */}

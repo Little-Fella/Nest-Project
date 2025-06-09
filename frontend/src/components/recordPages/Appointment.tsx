@@ -42,8 +42,8 @@ const Doctors: Doctor[] = [
         day: "ПТ",
         times: ["10:30", "13:30", "14:00", "15:30", "16:30", "17:00"],
       },
-      { day: "СБ 14", times: ["09:05", "16:30"] },
-      { day: "ВС 15", times: ["11:00", "13:00"] },
+      { day: "СБ", times: ["09:05", "16:30"] },
+      { day: "ВС", times: ["11:00", "13:00"] },
     ],
   },
   {
@@ -62,8 +62,8 @@ const Doctors: Doctor[] = [
         day: "ПТ",
         times: ["10:30", "13:30", "14:00", "15:30", "16:30", "17:00"],
       },
-      { day: "СБ 14", times: ["09:05", "16:30"] },
-      { day: "ВС 15", times: ["11:00", "13:00"] },
+      { day: "СБ", times: ["09:05", "16:30"] },
+      { day: "ВС", times: ["11:00", "13:00"] },
     ],
   },
   {
@@ -82,8 +82,8 @@ const Doctors: Doctor[] = [
         day: "ПТ",
         times: ["10:30", "13:30", "14:00", "15:30", "16:30", "17:00"],
       },
-      { day: "СБ 14", times: ["09:05", "16:30"] },
-      { day: "ВС 15", times: ["11:00", "13:00"] },
+      { day: "СБ", times: ["09:05", "16:30"] },
+      { day: "ВС", times: ["11:00", "13:00"] },
     ],
   },
   {
@@ -102,8 +102,8 @@ const Doctors: Doctor[] = [
         day: "ПТ",
         times: ["10:30", "13:30", "14:00", "15:30", "16:30", "17:00"],
       },
-      { day: "СБ 14", times: ["09:05", "16:30"] },
-      { day: "ВС 15", times: ["11:00", "13:00"] },
+      { day: "СБ", times: ["09:05", "16:30"] },
+      { day: "ВС", times: ["11:00", "13:00"] },
     ],
   },
 ];
@@ -179,7 +179,7 @@ export const AppointmentWizard: React.FC = () => {
       alert(
         `Вы записаны к ${selectedDoctor.name} на ${selectedDay} в ${selectedTime}`
       );
-      navigate("/confirmation"); // или другая логика
+      navigate("/profile"); // или другая логика
     } else {
       alert("Пожалуйста, выберите дату и время");
     }
@@ -242,27 +242,32 @@ export const AppointmentWizard: React.FC = () => {
           </div>
         )}
 
-        {/* Шаг 2 и 3 пока-заглушки */}
         {step === 2 && (
           <div className="doctor-selector">
             <h2>Выберите врача</h2>
             <div className="doctor-grid">
-              {Doctors.map((Doctor) => (
-                <div key={Doctor.id} className="doctor-card">
+              {Doctors.map((doctor) => (
+                <div
+                  key={doctor.id}
+                  className={`doctor-card ${
+                    selectedDoctor?.id === doctor.id ? "selected" : ""
+                  }`}
+                  onClick={() => setSelectedDoctor(doctor)}
+                >
                   <div className="doctor-photo">
-                    <img src={Doctor.photoUrl} alt={Doctor.name} />
+                    <img src={doctor.photoUrl} alt={doctor.name} />
                   </div>
                   <div className="doctor-info">
-                    <h3>{Doctor.name}</h3>
+                    <h3>{doctor.name}</h3>
                     <div className="rating">
                       <span className="stars">★★★★★</span>
-                      <span className="rating-value">{Doctor.rating}</span>
+                      <span className="rating-value">{doctor.rating}</span>
                     </div>
                     <div className="doctor-meta">
                       <span className="experience">
-                        {Doctor.experience} лет опыта
+                        {doctor.experience} лет опыта
                       </span>
-                      <span className="price">{Doctor.price}</span>
+                      <span className="price">{doctor.price}</span>
                     </div>
                   </div>
                 </div>
@@ -271,48 +276,71 @@ export const AppointmentWizard: React.FC = () => {
           </div>
         )}
         {step === 3 && (
-          <>
-            <div className="time-selection">
-              <p className="selection-title">Выберите дату и время</p>
-              <div className="dates-scroll">
-                {selectedDoctor?.schedule.map((slot) => {
-                  const [day, date] = slot.day.split(" ");
-                  return (
-                    <button
-                      key={slot.day}
-                      className={`date-btn ${
-                        selectedDay === slot.day ? "active" : ""
-                      }`}
-                      onClick={() => setSelectedDay(slot.day)}
-                    >
-                      <span className="day">{day}</span>
-                      <span className="date">{date || ""}</span>
-                    </button>
-                  );
-                })}
+          <div className="time-selector">
+            <h2>Выберите дату и время</h2>
+
+            <div className="appointment-card-3">
+              {/* Карточка выбранного врача */}
+              <div className="doctor-info-d">
+                <div className="doctor-photo-d">
+                  <img
+                    src={selectedDoctor?.photoUrl || logo}
+                    alt={selectedDoctor?.name}
+                  />
+                </div>
+                <h3>{selectedDoctor?.name}</h3>
+                <p className="specialty">{selectedSpecialty?.title}</p>
+                <p className="experience">
+                  {selectedDoctor?.experience} лет опыта
+                </p>
               </div>
 
-              <div className="times-grid">
-                {selectedDoctor?.schedule
-                  .find((slot) => slot.day === selectedDay)
-                  ?.times.map((time) => (
-                    <button
-                      key={time}
-                      className={`time-btn ${
-                        selectedTime === time ? "active" : ""
-                      }`}
-                      onClick={() => setSelectedTime(time)}
-                    >
-                      {time}
-                    </button>
-                  ))}
+              <div className="section-d">
+                <p>Доступные даты:</p>
+                <div className="dates-scroll">
+                  {selectedDoctor?.schedule.map((slot) => {
+                    const [day, date] = slot.day.split(" ");
+                    return (
+                      <button
+                        key={slot.day}
+                        className={`date-btn ${
+                          selectedDay === slot.day ? "active" : ""
+                        }`}
+                        onClick={() => setSelectedDay(slot.day)}
+                      >
+                        <span className="day">{day}</span>
+                        {date && <span className="date">{date}</span>}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="section-d">
+                <p>Доступное время:</p>
+                <div className="times-grid">
+                  {selectedDoctor?.schedule
+                    .find((slot) => slot.day === selectedDay)
+                    ?.times.map((time) => (
+                      <button
+                        key={time}
+                        className={`time-btn ${
+                          selectedTime === time ? "active" : ""
+                        }`}
+                        onClick={() => setSelectedTime(time)}
+                      >
+                        {time}
+                      </button>
+                    ))}
+                </div>
+              </div>
+              <div className="record-con">
+                <button className="next-btn" onClick={handleAppointmentSubmit}>
+                  Подтвердить запись
+                </button>
               </div>
             </div>
-
-            <button className="record" onClick={handleAppointmentSubmit}>
-              Записаться
-            </button>
-          </>
+          </div>
         )}
 
         <div className="nav-buttons">
