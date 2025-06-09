@@ -23,6 +23,9 @@ export class Clinic {
     @Column({ name: 'work_hour_end', type: 'time' })
     work_hour_end: string;
 
+    @Column({ name: 'photo_url', type: 'varchar', length: 255, nullable: true })
+    photo_url: string;
+
     @Column({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 

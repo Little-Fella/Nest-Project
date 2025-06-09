@@ -74,22 +74,25 @@ export class AppointmentsService {
     }
 
     async create(appointment: {
-        patient_id: number;
-        service_id: number;
-    }): Promise<any> {
-        const query = `
-            INSERT INTO appointments 
-                (patient_id, service_id, status)
-            VALUES ($1, $2, 'no_timing')
-            RETURNING *
-        `;
-        const result = await this.connection.query(query, [
-            appointment.patient_id,
-            appointment.service_id
-        ]);
-        return result[0];
-    }
-
+    patient_id: number;
+    service_id: number;
+    appointment_date: string; // или Date если вы работаете с объектами Date
+    appointment_time: string;
+}): Promise<any> {
+    const query = `
+        INSERT INTO appointments 
+            (patient_id, service_id, appointment_date, appointment_time, status)
+        VALUES ($1, $2, $3, $4, 'active')
+        RETURNING *
+    `;
+    const result = await this.connection.query(query, [
+        appointment.patient_id,
+        appointment.service_id,
+        appointment.appointment_date,
+        appointment.appointment_time
+    ]);
+    return result[0];
+}
 
     async scheduleAppointment(id: number, appointment_date: string, appointment_time: string): Promise<any> {
         const query = `

@@ -69,6 +69,19 @@ const Home: React.FC = () => {
   useSlider();
   //useModelViewer();
 
+  const handleAppointmentClick = () => {
+    // Проверяем наличие пользователя в localStorage или sessionStorage
+    const user = localStorage.getItem('user') || sessionStorage.getItem('user');
+    
+    if (user) {
+      // Если пользователь есть, перенаправляем на страницу записи
+      navigate('/appointment');
+    } else {
+      // Если пользователя нет, перенаправляем на страницу входа
+      navigate('/login');
+    }
+  };
+
   return (
     <main>
       {/* Header Section */}
@@ -82,7 +95,7 @@ const Home: React.FC = () => {
               Мы создаем улыбки, которые
               <br /> меняют жизни людей
             </p>
-            <button className="record" onClick={() => navigate("/appointment")}>
+            <button className="record" onClick={handleAppointmentClick}>
               Записаться на прием
             </button>
           </div>
@@ -339,9 +352,9 @@ const Home: React.FC = () => {
               <p className="our-works-text-doctor">· ортодонт</p>
             </div>
             <div className="our-works-button-wrapper">
-              <a href="#works" className="our-works-button">
+              <Link to={"works"} className="our-works-button">
                 Смотреть работы →
-              </a>
+              </Link>
             </div>
           </div>
         </div>

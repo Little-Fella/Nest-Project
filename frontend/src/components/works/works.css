@@ -1,0 +1,232 @@
+@font-face {
+  font-family: "Rubik";
+  src: url("fonts/Rubik-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rubik";
+  src: url("fonts/Rubik-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rubik";
+  src: url("./fonts/Rubik-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --primary: #b9eafa;
+  --accent: #297e99;
+  --background: white;
+  --text-dark: #111;
+  --text-light: #686868;
+  --button: #39add2;
+  --radius: 20px;
+  --font-family-base: Rubik, sans-serif;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body {
+  font-family: var(--font-family-base), serif;
+  background-color: var(--background);
+  color: var(--text-dark);
+  min-width: 320px; /* Минимальная ширина для мобильных устройств */
+  max-width: 1920px; /* Максимальная ширина для больших экранов */
+  margin: 0 auto; /* Центрирование контента */
+  width: 100%;
+  overflow-x: hidden; /* Предотвращает горизонтальный скролл */
+}
+
+main {
+  padding: 0px 5%;
+}
+
+body {
+  margin: 0 auto;
+}
+
+header.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10%;
+  background-color: white;
+}
+
+.header-logo img {
+  max-width: 120px;
+}
+
+.header-menu-list {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.header-menu-link {
+  text-decoration: none;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.login {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  background-color: var(--background);
+}
+
+.cards {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  min-width: 340px;
+  height: 420px;
+  perspective: 1000px;
+}
+
+.card-front img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+}
+
+.card-back img {
+  align-items: center;
+  width: 80%;
+  height: 80%;
+  object-fit: cover;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+}
+.card-front h3 {
+  margin: 10px 16px;
+  font-size: 16px;
+  text-align: left;
+  align-self: flex-start;
+}
+
+.card p {
+  margin: 0 16px 12px;
+  font-size: 14px;
+  color: #333;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 15px;
+  white-space: nowrap; /* всё в одну строку */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  gap: 10px;
+}
+
+.card-footer span {
+  font-size: 13px;
+  color: #444;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 1;
+  flex-grow: 1;
+  min-width: 0;
+  padding-top: 6px;
+}
+.card,
+.card h3,
+.card p,
+.card-footer span {
+  align-self: flex-start;
+  text-align: left;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s ease;
+  transform-style: preserve-3d;
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  background-color: #efefef;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 25px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-back {
+  align-items: center;
+  transform: rotateY(180deg);
+}
+
+h4 {
+  margin-bottom: 15px;
+}
+
+.flip-btn,
+.item {
+  display: inline;
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: var(--radius);
+  background-color: var(--button);
+  color: white;
+  padding: 6px 12px;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .card {
+    max-width: 90%;
+    height: auto;
+  }
+}
+
+.our-works-title {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.our-works-title-text {
+  margin-right: 15px;
+}
