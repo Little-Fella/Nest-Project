@@ -350,9 +350,9 @@ const Home: React.FC = () => {
               <p className="our-works-text-doctor">· ортодонт</p>
             </div>
             <div className="our-works-button-wrapper">
-              <a href="#works" className="our-works-button">
+              <Link to={"works"} className="our-works-button">
                 Смотреть работы →
-              </a>
+              </Link>
             </div>
           </div>
         </div>
